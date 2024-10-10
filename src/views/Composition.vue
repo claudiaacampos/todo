@@ -11,14 +11,15 @@
       <p>To start, add items to your list.</p>
 
       <div class="todo-add-bar">
-        <input v-model="data.newTodoName" @keyup.enter="addTodo" placeholder="Add a Todo" type="text" minlength="2" maxlength="250" />
+        <input v-model="data.newTodoName" type="text" placeholder="Add a Todo" minlength="2" maxlength="50" @input="updateCharCount" @keyup.enter="addTodo" />
         <button @click="addTodo(index)" class="add-btn">
           <svg width="40px" height="40px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path d="M6 12H18M12 6V18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </button>
       </div>
-      <p>{{ characters }} number of characters left.</p>
+      <p>Max number of characters: 50</p>
+      <p>{{ charCount }} characters left.</p>
     </div>
   </div>
 
@@ -46,8 +47,7 @@
 
       <div class="send-form">
         <input type="text" />
-        <input type="text" />
-        <button @click="" class="send-btn">
+        <button @click="" class="send-btn" placeholder="Enter your phone">
           <svg width="40px" height="40px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               fill-rule="evenodd"
@@ -70,16 +70,24 @@ export default {
     let data = reactive({
       newTodoName: "",
       todos: [],
+      charCount: 0,
     });
 
     const swearwords = ["fart", "poo", "willy"];
 
-    let todosCount = computed(() => {
+    /* let counter = reactive({
+      charCount: 0,
+    }); */
+    function updateCharCount() {
+      this.charCount = data.newTodoName.length;
+    }
+
+    const todosCount = computed(() => {
       return data.todos.length;
     });
 
     function addTodo() {
-      let newTodo = {
+      const newTodo = {
         id: Date.now(),
         name: data.newTodoName,
       };
@@ -103,6 +111,8 @@ export default {
       todosCount,
       addTodo,
       deleteTodo,
+      /* counter, */
+      updateCharCount,
     };
   },
 };
